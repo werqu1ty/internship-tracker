@@ -1,3 +1,6 @@
 .venv/
 __pycache__/
+PROGRESS.md
+CLAUDE.md
+first-chat-internship-tracker-chat.md
 *.db
