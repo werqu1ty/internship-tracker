@@ -25,6 +25,8 @@ def applications():
 @app.route("/api/applications", methods=["POST"])
 def add_application():
     data = request.get_json()
+    if not data.get("company") or not data.get("role"):
+        return jsonify({"message": "Invalid entry!"}), 400
     conn = get_connection()
     conn.execute("INSERT INTO applications (company, role) VALUES (?, ?)", (data["company"], data["role"]))
     conn.commit()
