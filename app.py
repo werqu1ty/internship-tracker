@@ -32,3 +32,16 @@ def add_application():
     conn.commit()
     conn.close()
     return jsonify({"message": "Application added!"}), 201
+
+
+@app.route("/api/applications/<int:id>")
+def get_application(id):
+    conn = get_connection()
+    conn.row_factory = sqlite3.Row
+    row = conn.execute("SELECT * FROM applications WHERE id = ?", (id,)).fetchone()
+    if row is None:
+        conn.close()
+        return jsonify({"message": "Application does not exist!"}), 404
+    else:
+        conn.close()
+        return jsonify(dict(row))
