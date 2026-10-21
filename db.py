@@ -1,8 +1,9 @@
 import sqlite3
 
+DB_PATH = "tracker.db"
 
 def get_connection():
-    conn = sqlite3.connect("tracker.db")
+    conn = sqlite3.connect(DB_PATH)
     return conn
 
 
