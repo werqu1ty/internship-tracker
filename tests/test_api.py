@@ -30,3 +30,17 @@ def test_get_application_found(client):
     response = client.get("/api/applications/1")
     assert response.status_code == 200
     assert response.get_json()["company"] == "Shell"
+
+
+def test_delete_application_found(client):
+    client.post("/api/applications", json={"company": "Shell", "role": "cashier"})
+    response = client.delete("/api/applications/1")
+    assert response.status_code == 200
+    response = client.get("/api/applications/1")
+    assert response.status_code == 404
+
+
+def test_delete_application_not_found(client):
+    client.post("/api/applications", json={"company": "Shell", "role": "cashier"})
+    response = client.delete("/api/applications/5")
+    assert response.status_code == 404

@@ -45,3 +45,16 @@ def get_application(id):
     else:
         conn.close()
         return jsonify(dict(row))
+
+
+@app.route("/api/applications/<int:id>", methods=["DELETE"])
+def delete_application(id):
+    conn = get_connection()
+    cursor = conn.execute("DELETE FROM applications WHERE id = ?", (id,))
+    if cursor.rowcount == 0:
+        conn.close()
+        return jsonify({"message": "Cannot delete because application does not exist!"}), 404
+    else:
+        conn.commit()
+        conn.close()
+        return jsonify({"message": "Successfully deleted!"}), 200
