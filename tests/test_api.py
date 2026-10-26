@@ -44,3 +44,25 @@ def test_delete_application_not_found(client):
     client.post("/api/applications", json={"company": "Shell", "role": "cashier"})
     response = client.delete("/api/applications/5")
     assert response.status_code == 404
+
+
+def test_update_application_found(client):
+    client.post("/api/applications", json={"company": "Shall", "role": "casheir"})
+    response = client.put("/api/applications/1", json={"company": "Shell", "role": "cashier"})
+    assert response.status_code == 200
+    response = client.get("/api/applications/1")
+    assert response.get_json()["company"] == "Shell"
+    assert response.get_json()["role"] == "cashier"
+
+
+def test_update_application_not_found(client):
+    client.post("/api/applications", json={"company": "Shell", "role": "cashier"})
+    response = client.put("/api/applications/57", json={"company": "Shell", "role": "cashier"})
+    assert response.status_code == 404
+
+
+def test_update_application_missing_role(client):
+    client.post("/api/applications", json={"company": "Shell", "role": "cashier"})
+    response = client.put("/api/applications/1", json={"company": "Shell"})
+    assert response.status_code == 400
+

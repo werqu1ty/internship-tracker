@@ -58,3 +58,21 @@ def delete_application(id):
         conn.commit()
         conn.close()
         return jsonify({"message": "Successfully deleted!"}), 200
+
+
+@app.route("/api/applications/<int:id>", methods=["PUT"])
+def update_application(id):
+    data = request.get_json()
+    if not data.get("company") or not data.get("role"):
+        return jsonify({"message": "Company or Role are invalid!"}), 400
+    else:
+        conn = get_connection()
+        cursor = conn.execute("UPDATE applications SET company = ?, role = ? WHERE id = ?", (data["company"], data["role"], id))
+        conn.commit()
+        if cursor.rowcount == 0:
+            conn.close()
+            return jsonify({"message": "Cannot edit because application does not exist!"}), 404
+        else:
+            conn.close()
+            return jsonify({"message": "Successfully edited!"}), 200
+
