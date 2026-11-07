@@ -2,6 +2,10 @@ from flask import Flask, jsonify, request
 from db import get_connection
 import sqlite3
 
+
+STATUSES = ("wishlist", "applied", "interview", "offer", "rejected")
+
+
 app = Flask(__name__)
 
 
@@ -29,8 +33,12 @@ def add_application():
         return jsonify({"message": "Request must contain JSON object!"}), 400
     if not data.get("company") or not data.get("role"):
         return jsonify({"message": "Invalid entry!"}), 400
+    status = data.get("status", "wishlist")
+    if status not in STATUSES:
+        return jsonify({"message": "Invalid status!"}), 400
     conn = get_connection()
-    conn.execute("INSERT INTO applications (company, role) VALUES (?, ?)", (data["company"], data["role"]))
+    conn.execute("INSERT INTO applications (company, role, location, deadline, status, notes, link) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                 (data["company"], data["role"], data.get("location"), data.get("deadline"), status, data.get("notes"), data.get("link")))
     conn.commit()
     conn.close()
     return jsonify({"message": "Application added!"}), 201

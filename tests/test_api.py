@@ -81,3 +81,31 @@ def test_update_application_not_json_object(client):
     response2 = client.put("/api/applications/1", json="hi")
     assert response2.status_code == 400
 
+
+def test_add_application_invalid_status(client):
+    response = client.post("/api/applications", json={"company": "Shell", "role": "assistant", "status": "banana"})
+    assert response.status_code == 400
+
+
+def test_add_application_default_status(client):
+    response = client.post("/api/applications", json={"company": "Shell", "role": "assistant"})
+    assert response.status_code == 201
+    response = client.get("/api/applications/1")
+    assert response.get_json()["status"] == "wishlist"
+
+
+def test_add_application_all_fields(client):
+    response = client.post("/api/applications", json={"company": "Shell", "role": "assistant", "location": "Edinburgh",
+                                                       "deadline": "27 Jan 2027", "status": "offer", "notes": "Starting on 1 June", "link": "company.tal.net"})
+    assert response.status_code == 201
+    response = client.get("/api/applications/1")
+    assert response.get_json()["company"] == "Shell"
+    assert response.get_json()["role"] == "assistant"
+    assert response.get_json()["location"] == "Edinburgh"
+    assert response.get_json()["deadline"] == "27 Jan 2027"
+    assert response.get_json()["status"] == "offer"
+    assert response.get_json()["notes"] == "Starting on 1 June"
+    assert response.get_json()["link"] == "company.tal.net"
+
+
+
