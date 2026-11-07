@@ -4,3 +4,5 @@ PROGRESS.md
 CLAUDE.md
 first-chat-internship-tracker-chat.md
 *.db
+.DS_Store
+*-chat-internship-tracker-chat.md
