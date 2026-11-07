@@ -66,3 +66,18 @@ def test_update_application_missing_role(client):
     response = client.put("/api/applications/1", json={"company": "Shell"})
     assert response.status_code == 400
 
+
+def test_add_application_not_json_object(client):
+    response1 = client.post("/api/applications", json=[])
+    assert response1.status_code == 400
+    response2 = client.post("/api/applications", json="hi")
+    assert response2.status_code == 400
+
+
+def test_update_application_not_json_object(client):
+    client.post("/api/applications", json={"company": "Shell", "role": "cashier"})
+    response1 = client.put("/api/applications/1", json=[])
+    assert response1.status_code == 400
+    response2 = client.put("/api/applications/1", json="hi")
+    assert response2.status_code == 400
+

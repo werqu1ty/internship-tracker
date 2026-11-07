@@ -25,6 +25,8 @@ def applications():
 @app.route("/api/applications", methods=["POST"])
 def add_application():
     data = request.get_json()
+    if not isinstance(data, dict):
+        return jsonify({"message": "Request must contain JSON object!"}), 400
     if not data.get("company") or not data.get("role"):
         return jsonify({"message": "Invalid entry!"}), 400
     conn = get_connection()
@@ -63,6 +65,8 @@ def delete_application(id):
 @app.route("/api/applications/<int:id>", methods=["PUT"])
 def update_application(id):
     data = request.get_json()
+    if not isinstance(data, dict):
+        return jsonify({"message": "Request must contain JSON object!"}), 400
     if not data.get("company") or not data.get("role"):
         return jsonify({"message": "Company or Role are invalid!"}), 400
     else:
