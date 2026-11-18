@@ -5,5 +5,33 @@
     </head>
     <body>
         <h1>Internship Tracker</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th> Company </th>
+                    <th> Role </th>
+                    <th> Status </th>
+                </tr>
+            </thead>
+            <tbody id="applications-body">
+            </tbody>
+        </table>
+
+        <script> 
+            const tbody = document.getElementById("applications-body");
+            console.log(tbody)
+            fetch("/api/applications")
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(application => {
+                    const row = document.createElement("tr");
+                    const cell = document.createElement("td");
+                    cell.textContent = application.company
+                    row.appendChild(cell)
+                    tbody.appendChild(row)
+                })})
+
+        </script>
+
     </body>
 </html>
