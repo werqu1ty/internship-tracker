@@ -25,9 +25,11 @@
             .then(data => {
                 data.forEach(application => {
                     const row = document.createElement("tr");
-                    const cell = document.createElement("td");
-                    cell.textContent = application.company
-                    row.appendChild(cell)
+                    ["company", "role", "status"].forEach(field => {
+                        const cell = document.createElement("td");
+                        cell.textContent = application[field];
+                        row.appendChild(cell);
+                    })
                     tbody.appendChild(row)
                 })})
 
