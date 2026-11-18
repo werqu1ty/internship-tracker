@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from db import get_connection
 import sqlite3
 
@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Hello, internship tracker!"
+    return render_template("index.html")
 
 
 @app.route("/api/applications")
