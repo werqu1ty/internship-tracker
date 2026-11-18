@@ -78,8 +78,12 @@ def update_application(id):
     if not data.get("company") or not data.get("role"):
         return jsonify({"message": "Company or Role are invalid!"}), 400
     else:
+        status = data.get("status", "wishlist")
+        if status not in STATUSES:
+            return jsonify({"message": "Invalid status!"}), 400
         conn = get_connection()
-        cursor = conn.execute("UPDATE applications SET company = ?, role = ? WHERE id = ?", (data["company"], data["role"], id))
+        cursor = conn.execute("UPDATE applications SET company = ?, role = ?, location = ?, deadline = ?, status = ?, notes = ?, link = ? WHERE id = ?",
+                               (data["company"], data["role"], data.get("location"), data.get("deadline"), status, data.get("notes"), data.get("link"), id))
         conn.commit()
         if cursor.rowcount == 0:
             conn.close()

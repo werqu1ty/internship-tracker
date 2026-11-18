@@ -108,4 +108,26 @@ def test_add_application_all_fields(client):
     assert response.get_json()["link"] == "company.tal.net"
 
 
+def test_update_application_invalid_status(client):
+    client.post("/api/applications", json={"company": "Shell", "role": "assistant", "location": "Edinburgh","deadline": "27 Jan 2027",
+                                             "status": "offer", "notes": "Starting on 1 June", "link": "company.tal.net"})
+    response = client.put("/api/applications/1", json={"company": "Shell", "role": "assistant", "status": "banana"})
+    assert response.status_code == 400
+
+
+def test_update_application_all_fields(client):
+    client.post("/api/applications", json={"company": "Shell", "role": "assistant", "location": "Edinburgh","deadline": "27 Jan 2027",
+                                             "status": "offer", "notes": "Starting on 1 June", "link": "company.tal.net"})
+    response = client.put("/api/applications/1", json={"company": "BlackBurgers", "role": "Chef", "location": "London","deadline": "12 Mar 2028",
+                                             "status": "interview", "notes": "Starting on 2 June", "link": "blackburgers.tal.net"})
+    assert response.status_code == 200
+    response2 = client.get("/api/applications/1")
+    assert response2.get_json()["company"] == "BlackBurgers"
+    assert response2.get_json()["role"] == "Chef"
+    assert response2.get_json()["location"] == "London"
+    assert response2.get_json()["deadline"] == "12 Mar 2028"
+    assert response2.get_json()["status"] == "interview"
+    assert response2.get_json()["notes"] == "Starting on 2 June"
+    assert response2.get_json()["link"] == "blackburgers.tal.net"
+
 
