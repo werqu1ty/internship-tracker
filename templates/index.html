@@ -1,39 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Internship Tracker</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
-        <h1>Internship Tracker</h1>
+        <header>
+            <h1>Internship Tracker</h1>
+            <button id="open-add" class="primary">+ Add application</button>
+        </header>
+
+        <dialog id="add-dialog">
+            <form id="add-form">
+                <h2 id="form-title">New application</h2>
+
+                <label>Company
+                    <input id="company" required>
+                </label>
+                <label>Role
+                    <input id="role" required>
+                </label>
+                <label>Location
+                    <input id="location">
+                </label>
+                <label>Deadline
+                    <input id="deadline" type="date">
+                </label>
+                <label>Status
+                    <select id="status">
+                        <option value="wishlist">wishlist</option>
+                        <option value="applied">applied</option>
+                        <option value="interview">interview</option>
+                        <option value="offer">offer</option>
+                        <option value="rejected">rejected</option>
+                    </select>
+                </label>
+                <label>Link
+                    <input id="link" placeholder="https://...">
+                </label>
+                <label>Notes
+                    <textarea id="notes" rows="3"></textarea>
+                </label>
+
+                <p id="form-error" class="error" hidden></p>
+
+                <div class="buttons">
+                    <button type="button" id="cancel-add">Cancel</button>
+                    <button type="submit" id="submit-button" class="primary">Add</button>
+                </div>
+            </form>
+        </dialog>
+
         <table>
             <thead>
                 <tr>
-                    <th> Company </th>
-                    <th> Role </th>
-                    <th> Status </th>
+                    <th>Company</th>
+                    <th>Role</th>
+                    <th>Location</th>
+                    <th>Deadline</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody id="applications-body">
             </tbody>
         </table>
+        <p id="empty-message" hidden>No applications yet. Press "+ Add application" to add one.</p>
 
-        <script> 
-            const tbody = document.getElementById("applications-body");
-            console.log(tbody)
-            fetch("/api/applications")
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(application => {
-                    const row = document.createElement("tr");
-                    ["company", "role", "status"].forEach(field => {
-                        const cell = document.createElement("td");
-                        cell.textContent = application[field];
-                        row.appendChild(cell);
-                    })
-                    tbody.appendChild(row)
-                })})
-
-        </script>
-
+        <script src="{{ url_for('static', filename='app.js') }}"></script>
     </body>
 </html>
