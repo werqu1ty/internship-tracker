@@ -74,6 +74,11 @@ th, td {
     vertical-align: top;
 }
 
+/* Keep each deadline (the 4th column) on one line. */
+td:nth-child(4) {
+    white-space: nowrap;
+}
+
 th {
     font-size: 0.85rem;
     color: var(--muted);
