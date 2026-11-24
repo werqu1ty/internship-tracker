@@ -190,3 +190,10 @@ internship-tracker/
 - Alerts for new listings that match my preferences
 - Filtering and sorting the table
 - Deploying it online
+
+## How I built it
+
+I wrote the back end (Flask API and SQLite database), the tests, and the
+core front-end logic myself, in small commits. I used an AI coding assistant
+(Claude Code) as a tutor and code reviewer, and to help build the rest of
+the front end (the add/edit form, buttons and styling).
